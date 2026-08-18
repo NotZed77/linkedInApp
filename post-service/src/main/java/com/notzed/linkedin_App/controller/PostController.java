@@ -1,5 +1,6 @@
 package com.notzed.linkedin_App.controller;
 
+import com.notzed.linkedin_App.auth.UserContextHolder;
 import com.notzed.linkedin_App.dto.PostCreateRequestDto;
 import com.notzed.linkedin_App.dto.PostDto;
 import com.notzed.linkedin_App.entity.Post;
@@ -27,7 +28,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDto> getPost(@PathVariable Long postId){
+    public ResponseEntity<PostDto> getPost(@PathVariable Long postId) {
         PostDto postDto = postService.getPostById(postId);
         return ResponseEntity.ok(postDto);
     }

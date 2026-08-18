@@ -1,5 +1,8 @@
 package com.notzed.linkedin_App.service.impl;
 
+import com.notzed.linkedin_App.auth.UserContextHolder;
+import com.notzed.linkedin_App.clients.ConnectionsClient;
+import com.notzed.linkedin_App.dto.PersonDto;
 import com.notzed.linkedin_App.dto.PostCreateRequestDto;
 import com.notzed.linkedin_App.dto.PostDto;
 import com.notzed.linkedin_App.entity.Post;
@@ -22,6 +25,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final ModelMapper modelMapper;
+    private final ConnectionsClient connectionsClient;
 
     @Override
     public PostDto createPost(PostCreateRequestDto postCreateRequestDto, Long userId) {
@@ -35,6 +39,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto getPostById(Long postId) {
         log.debug("Retrieving post with ID: {}", postId);
+        Long userId = UserContextHolder.getCurrentUserId();
+        List<PersonDto> firstConnections = connectionsClient.getFirstConnections();
+
+        // TODO send Notifications to all connections
+
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new ResourceNotFoundException("Post not found with ID: " + postId));
         return modelMapper.map(post, PostDto.class);
@@ -48,4 +57,6 @@ public class PostServiceImpl implements PostService {
                 .map((element) -> modelMapper.map(element, PostDto.class))
                 .collect(Collectors.toList());
     }
+
+
 }

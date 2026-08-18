@@ -18,13 +18,12 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
 
     @Query("MATCH (personA:Person) -[:CONNECTED_TO]- (personB:Person) -[:CONNECTED_TO]- (personC:Person) " +
             "WHERE personA.userId = $userId AND NOT (personA)- [:CONNECTED_TO] -(personC) " +
-            "AND personA <> personC" +
-            "RETURN DISTINCT personC")
+            "AND personA <> personCRETURN DISTINCT personC")
     List<Person> getSecondDegreeConnections(Long userId);
 
     @Query("MATCH (personA:Person) -[:CONNECTED_TO]- (personB:Person)" +
             " -[:CONNECTED_TO]- (personC:Person) -[:CONNECTED_TO] -(personD:Person) " +
             "WHERE personA.userId = $userId" +
-            "AND personA <> personD AND NOT (personA)- [:CONNECTED_TO] -(personD) RETURN DISTINCT personD")
+            "AND personA <> personD AND NOT (personA)- [:CONNECTED_TO] -(personD)RETURN DISTINCT personD")
     List<Person> getThirdDegreeConnections(Long userId);
 }
